@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 
 
@@ -37,6 +37,8 @@ import { NavLink } from "react-router-dom";
           >
             Produits 2
           </NavLink>
+          
+          <Link to="/manage-users">Gérer les profils</Link> 
         </header>
       );
     }

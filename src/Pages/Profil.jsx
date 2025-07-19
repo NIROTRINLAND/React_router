@@ -1,75 +1,73 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 
- function Profil() {
-      const [users, setUsers] = useState([]);
-      const [selectedUserId, setSelectedUserId] = useState(null);
+function Profil() {
+  const { user } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
 
-      useEffect(() => {
-        setUsers([
-          {
-            id: 1,
-            name: "Alice",
-            operations: [
-              { expression: "2 + 3", result: 2 + 3 },
-              { expression: "4 * 5", result: 4 * 5 },
-              { expression: "10 - 2", result: 10 - 2 },
-            ],
-          },
-          {
-            id: 2,
-            name: "Bob",
-            operations: [
-              { expression: "7 - 1", result: 7 - 1 },
-              { expression: "8 / 2", result: 8 / 2 },
-              { expression: "3 * 3", result: 3 * 3 },
-            ],
-          },
-          {
-            id: 3,
-            name: "Charlie",
-            operations: [
-              { expression: "5 + 5", result: 5 + 5 },
-              { expression: "6 * 2", result: 6 * 2 },
-              { expression: "12 - 4", result: 12 - 4 },
-            ],
-          },
-        ]);
-      }, []);
+  const styles = {
+    container: {
+      padding: "20px",
+      maxWidth: "600px",
+      margin: "auto",
+      fontFamily: "Arial, sans-serif",
+      backgroundColor: theme.backgroundColor,
+      color: theme.textColor,
+    },
+    card: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "15px",
+      backgroundColor: theme.cardColor,
+      padding: "25px",
+      borderRadius: "10px",
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+      border: `1px solid ${theme.borderColor}`,
+    },
+    info: {
+      margin: "5px 0",
+      padding: "10px",
+      backgroundColor: theme.inputBackgroundColor,
+      borderRadius: "5px",
+      color: theme.inputTextColor,
+    },
+    profileImage: {
+      maxWidth: "100%",
+      borderRadius: "5px",
+      border: `1px solid ${theme.borderColor}`,
+    },
+  };
 
-      const handleClick = (id) => {
-        setSelectedUserId((prev) => (prev === id ? null : id));
-      };
-
-      return (
-        <div className="min-h-screen flex flex-col items-center  px-4 py-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Profil</h1>
-          <p className="text-lg text-gray-600 mb-8">Cliquez sur un nom pour voir ses opérations :</p>
-          <div className="w-full max-w-2xl space-y-4">
-            {users.map((user) => (
-              <div
-                key={user.id}
-                className="bg-white rounded-lg shadow-sm overflow-hidden"
-              >
-                <div
-                  onClick={() => handleClick(user.id)}
-                  className="cursor-pointer bg-gray-200 p-4 font-semibold text-gray-800 hover:bg-gray-300 transition-colors duration-300"
-                >
-                  {user.name}
-                </div>
-                {selectedUserId === user.id && (
-                  <ul className="p-4 space-y-2">
-                    {user.operations.map((op, index) => (
-                      <li key={index} className="text-gray-700">
-                        ➤ <strong>{op.expression}</strong> = <span>{op.result}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-          </div>
+  return (
+    <div style={styles.container}>
+      <h2>Mon Profil</h2>
+      <div style={styles.card}>
+        {user?.profileImage && (
+          <img
+            src={user.profileImage}
+            alt="Profile"
+            style={styles.profileImage}
+          />
+        )}
+        <div style={styles.info}>
+          <strong>Nom :</strong> {user?.name || "Non défini"}
         </div>
-      );
-    }
+        <div style={styles.info}>
+          <strong>Email :</strong> {user?.email || "Non défini"}
+        </div>
+        <div style={styles.info}>
+          <strong>Âge :</strong> {user?.age || "Non défini"}
+        </div>
+        <div style={styles.info}>
+          <strong>Localisation :</strong> {user?.location || "Non défini"}
+        </div>
+        <div style={styles.info}>
+          <strong>Bio :</strong> {user?.bio || "Non défini"}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default Profil;
